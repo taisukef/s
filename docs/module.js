@@ -26,11 +26,22 @@ const addScript = (src) => {
   document.head.appendChild(sc);
 };
 const init = () => {
-  addStyleSheet("https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css");
-  addStyleSheet("https://optgeo.github.io/s/style.css");
-  addScript("https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js");
+  const maplibre = false;
+  if (maplibre) {
+    const mapver = "maplibre-gl@1.14.0-rc.1";
+    addStyleSheet(`https://unpkg.com//${mapver}/dist/maplibre-gl.css`);
+    addScript(`https://unpkg.com/${mapver}/dist/maplibre-gl.js`);
+  } else {
+    //const mapver = "mapbox-gl-js/v2.1.1";
+    const mapver = "mapbox-gl-js/v2.2.0";
+    //addStyleSheet("https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css");
+    //addScript("https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js");
+    addStyleSheet(`https://api.tiles.mapbox.com/${mapver}/mapbox-gl.css`);
+    addScript(`https://api.tiles.mapbox.com/${mapver}/mapbox-gl.js`);
+  }
   addScript("https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js");
   addScript("https://unpkg.com/scrollama");
+  addStyleSheet("https://optgeo.github.io/s/style.css");
 
   const map = document.createElement("div");
   map.id = "map";

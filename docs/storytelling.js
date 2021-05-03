@@ -116,8 +116,6 @@ export function showMap(config) {
     story.appendChild(footer);
   }
 
-  mapboxgl.accessToken = config.accessToken;
-
   const transformRequest = (url) => {
     const hasQuery = url.indexOf("?") !== -1;
     const suffix = hasQuery ? "&pluginName=scrollytellingV2" : "?pluginName=scrollytellingV2";
@@ -126,7 +124,10 @@ export function showMap(config) {
     }
   }
 
-  const map = new mapboxgl.Map({
+  const mapgl = globalThis.mapboxgl ? mapboxgl : maplibregl;
+  mapgl.accessToken = config.accessToken;
+  console.log(config.style);
+  const map = new mapgl.Map({
     container: 'map',
     style: config.style,
     center: config.chapters[0].location.center,
@@ -137,6 +138,7 @@ export function showMap(config) {
     transformRequest: transformRequest
   });
 
+  config.use3dTerrain = false;
   if (config.use3dTerrain) {
     map.addSource('mapbox-dem', {
         'type': 'raster-dem',
@@ -160,7 +162,7 @@ export function showMap(config) {
 };
 
   if (config.showMarkers) {
-    const marker = new mapboxgl.Marker({ color: config.markerColor });
+    const marker = new mapgl.Marker({ color: config.markerColor });
     marker.setLngLat(config.chapters[0].location.center).addTo(map);
   }
   // instantiate the scrollama
